@@ -23,7 +23,6 @@ def compute_camera_intrinsic(focal_length, sensor_size, original_image_size, cro
     return K.flatten()
     #return K
 
-
 focal_length = 74.5
 sensor_size = (22.3, 14.9)
 original_image_size = (5184, 3456)
