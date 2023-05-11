@@ -8,4 +8,4 @@ def visualize_point_cloud(ply_file):
     # visualize
     o3d.visualization.draw_geometries([point_cloud])
 
-visualize_point_cloud("/home/junaid/alifya/Bean/3DBEAN/point-cloud/premium (2071).ply")
+visualize_point_cloud("/home/junaid/alifya/Bean/3DBEAN/point/longberry (1191).ply")

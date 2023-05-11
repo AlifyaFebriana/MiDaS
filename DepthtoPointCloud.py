@@ -3,7 +3,7 @@ import os
 import open3d as o3d
 import numpy as np
 
-def depth_map_to_point_cloud(depth_map_path, rgb_image_path, ply_path, fx, fy, cx, cy):
+def depth_map_to_point_cloud(depth_map_path, ply_path, fx, fy, cx, cy):
 
     #load the depth map
     depth_map = cv2.imread(depth_map_path, cv2.IMREAD_ANYDEPTH)
@@ -12,8 +12,8 @@ def depth_map_to_point_cloud(depth_map_path, rgb_image_path, ply_path, fx, fy, c
     depth_map = depth_map.astype(np.float32)
 
     # load the RGB image
-    rgb_image = cv2.imread(rgb_image_path, cv2.IMREAD_COLOR)
-    rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
+    #rgb_image = cv2.imread(rgb_image_path, cv2.IMREAD_COLOR)
+    #rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
 
     # generate the point cloud from the depth map and the camera intrinsics parameter
     # monocular images
@@ -38,19 +38,19 @@ def depth_map_to_point_cloud(depth_map_path, rgb_image_path, ply_path, fx, fy, c
     # convert the 3D points to an Open3D point cloud
     point_cloud = o3d.geometry.PointCloud()
     point_cloud.points = o3d.utility.Vector3dVector(points_3D.reshape(-1, 3))
-    point_cloud.colors = o3d.utility.Vector3dVector(rgb_image.reshape(-1, 3) / 255.0)
+    #point_cloud.colors = o3d.utility.Vector3dVector(rgb_image.reshape(-1, 3) / 255.0)
 
     # save the point cloud to a .ply file
     o3d.io.write_point_cloud(ply_path, point_cloud)
 
 
 # call the function
-depth_map_dir = "/home/junaid/alifya/Bean/3DBEAN/images"
-rgb_image_dir = "/home/junaid/alifya/Bean/3DBEAN/depth"
-output_ply_dir = "/home/junaid/alifya/Bean/dataset"
+depth_map_dir = "/home/junaid/alifya/Bean/3DBEAN/depth"
+#rgb_image_dir = "/home/junaid/alifya/Bean/3DBEAN/depth"
+output_ply_dir = "/home/junaid/alifya/Bean/3DBEAN/point"
 
 # camera intrinsics parameter
-fx, fy, cx, cy = 5346.726457399102, 5334.765100671141, 128.0, 128.0
+fx, fy, cx, cy = 307.200000, 307.200000, 128.000000, 128.000000
 
 # process all the depth map in the train folder
 for file in os.listdir(depth_map_dir):
@@ -61,12 +61,12 @@ for file in os.listdir(depth_map_dir):
         base_filename = os.path.splitext(file)[0]
 
         # construct the rgb image path with a correct extension
-        rgb_image_path = os.path.join(rgb_image_dir, f"{base_filename}.jpg")
+        #rgb_image_path = os.path.join(rgb_image_dir, f"{base_filename}.jpg")
 
         # construct the ply file to each 3d point cloud
         ply_path = os.path.join(output_ply_dir, f"{base_filename}.ply")
 
-        depth_map_to_point_cloud(depth_map_path, rgb_image_path, ply_path, fx, fy, cx, cy)
+        depth_map_to_point_cloud(depth_map_path, ply_path, fx, fy, cx, cy)
 
 
 
